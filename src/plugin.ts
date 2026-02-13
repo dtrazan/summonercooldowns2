@@ -7,7 +7,6 @@ import { ChampionDial } from "./actions/champion-dial";
 import { ChampionDisplay } from "./actions/champion-display";
 import { CooldownReduction } from "./actions/cooldown-reduction";
 import { SummonerCooldown } from "./actions/summoner-cooldown";
-import { TimerTest } from "./actions/timer-test";
 import { defaultGlobalSettings, type GlobalSettings } from "./global-settings";
 
 // We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information
@@ -43,7 +42,6 @@ streamDeck.actions.registerAction(new ChampionDial());
 streamDeck.actions.registerAction(new ChampionDisplay());
 streamDeck.actions.registerAction(new CooldownReduction());
 streamDeck.actions.registerAction(new SummonerCooldown());
-streamDeck.actions.registerAction(new TimerTest());
 
 // Finally, connect to the Stream Deck.
 streamDeck.connect();

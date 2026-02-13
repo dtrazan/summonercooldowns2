@@ -79,21 +79,6 @@
 					"FontSize": 18
 				}
 			]
-		},
-		{
-			"Name": "Timer Test",
-			"UUID": "com.dt.summonercooldowns.timertest",
-			"Icon": "imgs/actions/champion-level/icon",
-			"Tooltip": "Test timer reliability - shows seconds counter",
-			"Controllers": [
-				"Keypad"
-			],
-			"States": [
-				{
-					"Image": "imgs/actions/champion-level/key",
-					"TitleAlignment": "middle"
-				}
-			]
 		}
 	],
 	"Category": "summonercooldowns",
