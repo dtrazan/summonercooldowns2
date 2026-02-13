@@ -1,0 +1,38 @@
+{
+  "Aatrox": {
+    "cooldown": [22, 19, 16, 13, 10]
+  },
+  "Garen": {
+    "cooldown": [8, 8, 8, 8, 8]
+  },
+  "Gnar": {
+    "cooldown": [15, 15, 15, 15, 15]
+  },
+    "Katarina": {
+    "cooldown": [4, 4, 4, 4, 4]
+  },
+    "Kled": {
+    "cooldown": [4, 4, 4, 4, 4]
+  },
+      "Mordekaiser": {
+    "cooldown": [4, 4, 4, 4, 4]
+  },
+      "Reksai": {
+    "cooldown": [8, 8, 8, 8, 8]
+  },
+      "Renekton": {
+    "cooldown": [12, 12, 12, 12, 12]
+  },
+      "Riven": {
+    "cooldown": [6, 6, 6, 6, 6]
+  },
+      "Sett": {
+    "cooldown": [4, 4, 4, 4, 4]
+  },
+        "Tryndamere": {
+    "cooldown": [8, 8, 8, 8, 8]
+  },
+        "Yasuo": {
+    "cooldown": [15.13, 14.3, 13.46, 12.63, 11.79]
+  }
+}

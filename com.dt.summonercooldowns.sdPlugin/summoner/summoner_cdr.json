@@ -1,0 +1,22 @@
+[
+  {
+    "id": "boots",
+    "summoner_haste": 0,
+    "img": "Boots.png"
+  },
+  {
+    "id": "boots_cd1",
+    "summoner_haste": 10,
+    "img": "Boots_CD1.png"
+  },
+  {
+    "id": "cosmic_insight_rune",
+    "summoner_haste": 18,
+    "img": "Cosmic_Insight_rune.png"
+  },
+  {
+    "id": "boots_cd2",
+    "summoner_haste": 20,
+    "img": "Boots_CD2.png"
+  }
+]

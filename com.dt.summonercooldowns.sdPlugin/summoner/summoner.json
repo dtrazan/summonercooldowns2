@@ -1,0 +1,57 @@
+{
+  "SummonerBarrier": {
+    "name": "Barrier",
+    "cooldown": 180,
+    "img": "SummonerBarrier.png"
+  },
+  "SummonerClarity": {
+    "name": "Clarity",
+    "cooldown": 240,
+    "img": "SummonerClarity.png"
+  },
+  "SummonerCleanse": {
+    "name": "Cleanse",
+    "cooldown": 240,
+    "img": "SummonerCleanse.png"
+  },
+  "SummonerExhaust": {
+    "name": "Exhaust",
+    "cooldown": 240,
+    "img": "SummonerExhaust.png"
+  },
+  "SummonerFlash": {
+    "name": "Flash",
+    "cooldown": 300,
+    "img": "SummonerFlash.png"
+  },
+  "SummonerGhost": {
+    "name": "Ghost",
+    "cooldown": 240,
+    "img": "SummonerGhost.png"
+  },
+  "SummonerHeal": {
+    "name": "Heal",
+    "cooldown": 240,
+    "img": "SummonerHeal.png"
+  },
+  "SummonerIgnite": {
+    "name": "Ignite",
+    "cooldown": 180,
+    "img": "SummonerIgnite.png"
+  },
+  "SummonerSmite": {
+    "name": "Smite",
+    "cooldown": 90,
+    "img": "SummonerSmite.png"
+  },
+  "SummonerTeleport": {
+    "name": "Teleport",
+    "cooldown": 300,
+    "img": "SummonerTeleport.png"
+  },
+  "SummonerUnleashedTeleport": {
+    "name": "Unleashed\nTeleport",
+    "cooldown": 420,
+    "img": "SummonerUnleashedTeleport.png"
+  }
+}

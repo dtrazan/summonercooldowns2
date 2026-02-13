@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"c:\\\\Users\\\\dtran\\\\Desktop\\\\summonercooldowns2\\\\src\\\\actions\\\\increment-counter.ts\")",
+      "Bash(npm run build:*)",
+      "WebFetch(domain:chatgpt.com)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nMerge branch ''implement-cdr'' into main\n\nBrings complete CDR implementation and critical timer race condition fix:\n\nFeatures:\n- Summoner spell cooldown reduction \\(CDR\\) system\n- CDR items support \\(boots, runes\\)\n- Timer persistence across page switches\n- Champion display action for showing locked champions\n- \"Down\" state images for active cooldowns\n\nCritical Fixes:\n- Timer race condition with mutex lock pattern\n- Atomic timer state management\n- Error handling in timer callbacks\n- Improved logging with streamDeck.logger\n\nTesting:\n- Timer fix verified with rapid key presses\n- CDR calculations tested and working\n- Page switching maintains timer state\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)"
+    ]
+  }
+}

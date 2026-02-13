@@ -1,0 +1,123 @@
+{
+	"Name": "summonercooldowns",
+	"Version": "0.1.0.0",
+	"Author": "DT",
+	"Actions": [
+		{
+			"Name": "Champion Dial",
+			"UUID": "com.dt.summonercooldowns.championdial",
+			"Icon": "imgs/actions/champion-level/icon",
+			"Tooltip": "Rotate the dial to select a champion",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Rotate": "Select champion",
+					"Push": "Confirm selection",
+					"Touch": "View champion"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/champion-level/key"
+				}
+			]
+		},
+		{
+			"Name": "Champion Display",
+			"UUID": "com.dt.summonercooldowns.championdisplay",
+			"Icon": "imgs/actions/champion-level/icon",
+			"Tooltip": "Display the champion assigned to this column",
+			"Controllers": [
+				"Encoder"
+			],
+			"Encoder": {
+				"layout": "$A1",
+				"TriggerDescription": {
+					"Rotate": "No action",
+					"Push": "No action",
+					"Touch": "No action"
+				}
+			},
+			"States": [
+				{
+					"Image": "imgs/actions/champion-level/key"
+				}
+			]
+		},
+		{
+			"Name": "Summoner Cooldown",
+			"UUID": "com.dt.summonercooldowns.summonercooldown",
+			"Icon": "imgs/actions/champion-level/icon",
+			"Tooltip": "Track summoner spell cooldowns",
+			"PropertyInspectorPath": "ui/summoner-cooldown.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/champion-level/key",
+					"TitleAlignment": "middle",
+					"FontSize": 24
+				}
+			]
+		},
+		{
+			"Name": "Cooldown Reduction",
+			"UUID": "com.dt.summonercooldowns.cooldownreduction",
+			"Icon": "imgs/actions/champion-level/icon",
+			"Tooltip": "Manage cooldown reduction items",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/champion-level/key",
+					"TitleAlignment": "middle",
+					"FontSize": 18
+				}
+			]
+		},
+		{
+			"Name": "Timer Test",
+			"UUID": "com.dt.summonercooldowns.timertest",
+			"Icon": "imgs/actions/champion-level/icon",
+			"Tooltip": "Test timer reliability - shows seconds counter",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/champion-level/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		}
+	],
+	"Category": "summonercooldowns",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "summonercooldowns",
+	"Icon": "imgs/plugin/marketplace",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "6.9"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		},
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"UUID": "com.dt.summonercooldowns"
+}
