@@ -24,7 +24,6 @@ export class CooldownReduction extends SingletonAction<CooldownReductionSettings
 
 			const data = readFileSync(cdrDataPath, "utf-8");
 			this.cdrItems = JSON.parse(data);
-			console.log(`[CooldownReduction] Loaded ${this.cdrItems.length} CDR items`);
 		} catch (error) {
 			console.error("[CooldownReduction] Error loading CDR items:", error);
 		}
@@ -55,8 +54,6 @@ export class CooldownReduction extends SingletonAction<CooldownReductionSettings
 			await ev.action.setTitle(`${currentItem.summoner_haste}%`);
 			await ev.action.setImage(`imgs/items/${currentItem.img}`);
 		}
-
-		console.log(`[CooldownReduction] Initialized at row ${currentRow}, column ${currentCol}`);
 	}
 
 	override async onKeyDown(ev: KeyDownEvent<CooldownReductionSettings>): Promise<void> {
@@ -103,8 +100,6 @@ export class CooldownReduction extends SingletonAction<CooldownReductionSettings
 			};
 
 			await streamDeck.settings.setGlobalSettings(globalSettings);
-
-			console.log(`[CooldownReduction] Switched to: ${currentItem.id} (${currentItem.summoner_haste}% haste) at row ${currentRow}, column ${currentCol}`);
 		}
 	}
 }

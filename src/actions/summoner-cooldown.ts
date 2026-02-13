@@ -70,7 +70,6 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 
 			const data = readFileSync(summonerDataPath, "utf-8");
 			this.summonerData = JSON.parse(data);
-			console.log(`[SummonerCooldown] Loaded ${Object.keys(this.summonerData).length} summoner spells`);
 		} catch (error) {
 			console.error("[SummonerCooldown] Error loading summoner spells:", error);
 		}
@@ -293,7 +292,7 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 				if (updatedCell?.isTimerRunning && !spellChanged && !timerManager.isRunning(timerKey)) {
 					const resumeTime = updatedCell.remainingTime ?? reducedCooldown;
 					if (resumeTime > 0) {
-						console.log(`[SummonerCooldown] Restarting timer for ${timerKey} at ${resumeTime}s`);
+
 						this.startTimerForCell(timerKey, currentRow, currentCol, resumeTime, cooldown, spellKey);
 					}
 				}

@@ -92,15 +92,6 @@ export class TimerManager {
 		if (!timer) return undefined;
 		return Math.max(0, this.computeRemaining(timer));
 	}
-
-	/**
-	 * Clear all timers. Used for cleanup.
-	 */
-	clearAll(): void {
-		for (const key of this.timers.keys()) {
-			this.clearTimer(key);
-		}
-	}
 }
 
 /** Shared singleton instance */

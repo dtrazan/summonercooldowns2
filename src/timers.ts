@@ -31,12 +31,10 @@ const workerCode = `
 const { parentPort } = require('node:worker_threads');
 
 let timers = {};
-let debug = false;
 let supportedCommands = ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval'];
 
 function clearTimerAndRemove(id) {
 	if (timers[id]) {
-		if (debug) console.log('clearTimerAndRemove', id, timers[id], timers);
 		clearTimeout(timers[id]);
 		delete timers[id];
 		parentPort.postMessage({ type: 'clearTimer', id: id });

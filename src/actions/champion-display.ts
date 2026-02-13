@@ -48,7 +48,6 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 			const championData = JSON.parse(data);
 
 			this.champions = Object.keys(championData.data);
-			console.log(`[ChampionDisplay] Loaded ${this.champions.length} champions`);
 		} catch (error) {
 			console.error("[ChampionDisplay] Error loading champions:", error);
 			this.champions = ["Error loading champions"];
@@ -154,22 +153,14 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 		// Update cooldown_reduction for Row 0 if no timer is running
 		if (!isTimerRunningRow0) {
 			globalSettings.spellsRow0[currentColumn]!.cooldown_reduction = cooldown_reduction;
-			console.log(`[ChampionDisplay] Updated CDR  for Row 0, Column ${currentColumn}: ${cooldown_reduction.toFixed(2)}%`);
-		} else {
-			console.log(`[ChampionDisplay] Timer running for Row 0, Column ${currentColumn} - skipping CDR update`);
 		}
 
 		// Update cooldown_reduction for Row 1 if no timer is running
 		if (!isTimerRunningRow1) {
 			globalSettings.spellsRow1[currentColumn]!.cooldown_reduction = cooldown_reduction;
-			console.log(`[ChampionDisplay] Updated CDR for Row 1, Column ${currentColumn}: ${cooldown_reduction.toFixed(2)}%`);
-		} else {
-			console.log(`[ChampionDisplay] Timer running for Row 1, Column ${currentColumn} - skipping CDR update`);
 		}
 
 		await streamDeck.settings.setGlobalSettings(globalSettings);
-
-		console.log(`[ChampionDisplay] Updated summoner haste for column ${currentColumn}: ${totalHaste}% (Row0: ${hasteRow0}%, Row1: ${hasteRow1}%)`);
 	}
 
 	override async onDialRotate(ev: DialRotateEvent<ChampionDisplaySettings>): Promise<void> {

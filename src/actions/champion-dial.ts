@@ -28,7 +28,6 @@ export class ChampionDial extends SingletonAction<ChampionDialSettings> {
 			const championData = JSON.parse(data);
 
 			this.champions = Object.keys(championData.data);
-			console.log(`[ChampionDial] Loaded ${this.champions.length} champions`);
 		} catch (error) {
 			console.error("[ChampionDial] Error loading champions:", error);
 			this.champions = ["Error loading champions"];
