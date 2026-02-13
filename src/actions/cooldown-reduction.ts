@@ -51,7 +51,7 @@ export class CooldownReduction extends SingletonAction<CooldownReductionSettings
 		const currentItem = this.cdrItems[currentIndex];
 		
 		if (currentItem) {
-			await ev.action.setTitle(`${currentItem.summoner_haste}%`);
+			await ev.action.setTitle("");
 			await ev.action.setImage(`imgs/items/${currentItem.img}`);
 		}
 	}
@@ -77,7 +77,7 @@ export class CooldownReduction extends SingletonAction<CooldownReductionSettings
 			ev.payload.settings.current_img = currentItem.img;
 			
 			await ev.action.setSettings(ev.payload.settings);
-			await ev.action.setTitle(`${currentItem.summoner_haste}%`);
+			await ev.action.setTitle("");
 			await ev.action.setImage(`imgs/items/${currentItem.img}`);
 
 			// Store in global settings

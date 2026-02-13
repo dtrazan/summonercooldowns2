@@ -60,7 +60,8 @@
 				{
 					"Image": "imgs/actions/champion-level/key",
 					"TitleAlignment": "middle",
-					"FontSize": 24
+					"FontSize": 40,
+					"FontFamily": "Verdana"
 				}
 			]
 		},

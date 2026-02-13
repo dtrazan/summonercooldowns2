@@ -53,9 +53,8 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 
 					const spellsArray = currentRow === 0 ? globalSettings.spellsRow0 : globalSettings.spellsRow1;
 					const spellCell = spellsArray?.[currentCol];
-					const displayTime = this.getReducedCooldown(spellCell?.cooldown ?? 0, spellCell?.cooldown_reduction);
 
-					await actionRef.setTitle(displayTime.toString());
+					await actionRef.setTitle("");
 				} catch (error) {
 					console.error("[SummonerCooldown] Error updating instance in global settings listener:", error);
 				}
@@ -188,7 +187,7 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 
 					const actionRef = this.findActionForPosition(row, col);
 					if (actionRef) {
-						await actionRef.setTitle(reducedCooldown.toString());
+						await actionRef.setTitle("");
 						if (latestSpellData?.img) {
 							await actionRef.setImage(`imgs/summoner/${latestSpellData.img}`);
 						}
@@ -284,8 +283,8 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 						? existingCell.remainingTime
 						: reducedCooldown);
 
-				await ev.action.setTitle(displayTime.toString());
 				const isTimerActive = timerManager.isRunning(timerKey) || (!spellChanged && existingCell?.isTimerRunning);
+				await ev.action.setTitle(isTimerActive ? displayTime.toString() : "");
 				await ev.action.setImage(`imgs/summoner/${isTimerActive ? this.getDownImage(spell.img) : spell.img}`);
 
 				// Restart timer if it was running when page was switched (and not already running in memory)
@@ -298,7 +297,7 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 				}
 			}
 		} else if (spell) {
-			await ev.action.setTitle(spell.cooldown.toString());
+			await ev.action.setTitle("");
 			await ev.action.setImage(`imgs/summoner/${spell.img}`);
 		}
 	}
@@ -346,31 +345,27 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 							await streamDeck.settings.setGlobalSettings(globalSettings);
 
 							// Update UI
-							await ev.action.setTitle(reducedCooldown.toString());
-							const resetImg = this.summonerData[spellCell.spell ?? ""]?.img;
-							if (resetImg) {
-								await ev.action.setImage(`imgs/summoner/${resetImg}`);
-							}
+						await ev.action.setTitle("");
+						const resetImg = this.summonerData[spellCell.spell ?? ""]?.img;
+						if (resetImg) {
+							await ev.action.setImage(`imgs/summoner/${resetImg}`);
+						}
 
-							streamDeck.logger.info(`Reset timer for ${timerKey} to ${reducedCooldown}s`);
-						} else {
-							// Timer is not running — start it with reduced cooldown
-							// Always use the current reduced cooldown to ensure cooldown_reduction changes are applied
-							const startTime = reducedCooldown;
+						streamDeck.logger.info(`Reset timer for ${timerKey} to ${reducedCooldown}s`);
+					} else {
+						// Timer is not running — start it with reduced cooldown
+						// Always use the current reduced cooldown to ensure cooldown_reduction changes are applied
+						const startTime = reducedCooldown;
 
-							if (startTime <= 0) {
-								spellCell.remainingTime = reducedCooldown;
-								spellCell.isTimerRunning = false;
-								await streamDeck.settings.setGlobalSettings(globalSettings);
-								await ev.action.setTitle(reducedCooldown.toString());
-								return;
-							}
-
-							// Always reset remainingTime to current reduced cooldown when starting fresh
-							// This ensures any changes to cooldown_reduction are properly reflected
+						if (startTime <= 0) {
 							spellCell.remainingTime = reducedCooldown;
+							spellCell.isTimerRunning = false;
+							await streamDeck.settings.setGlobalSettings(globalSettings);
+							await ev.action.setTitle("");
+							return;
+						}
 
-							// Mark as running and persist BEFORE starting timer
+						// Always reset remainingTime to current reduced cooldown when starting fresh
 							spellCell.isTimerRunning = true;
 							await streamDeck.settings.setGlobalSettings(globalSettings);
 
@@ -379,6 +374,7 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 							if (startImg) {
 								await ev.action.setImage(`imgs/summoner/${this.getDownImage(startImg)}`);
 							}
+							await ev.action.setTitle(reducedCooldown.toString());
 
 							// Now safe to start the timer - state is persisted
 							// Use the current reduced cooldown for fresh timer starts
@@ -465,7 +461,7 @@ export class SummonerCooldown extends SingletonAction<SummonerCooldownSettings> 
 		}
 
 		if (spell) {
-			await ev.action.setTitle(spell.cooldown.toString());
+			await ev.action.setTitle("");
 			await ev.action.setImage(`imgs/summoner/${spell.img}`);
 		}
 	}

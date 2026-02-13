@@ -12,7 +12,7 @@ import { timerManager } from "../timer-manager.js";
 @action({ UUID: "com.dt.summonercooldowns.championdial" })
 export class ChampionDial extends SingletonAction<ChampionDialSettings> {
 	private champions: string[] = [];
-	private roles = ["Top         I", "Jungle       II", "Mid       III", "ADC        IV", "Support     V"];
+	private roles = ["TOP⠀⠀⠀⠀", "JG⠀⠀⠀⠀", "MID⠀⠀⠀", "ADC⠀⠀⠀", "SUPP⠀⠀⠀"];
 
 	constructor() {
 		super();
@@ -64,10 +64,12 @@ export class ChampionDial extends SingletonAction<ChampionDialSettings> {
 		// DialDownEvent/DialRotateEvent/TouchTapEvent already type action as DialAction,
 		// but WillAppearEvent types it as DialAction | KeyAction — use isDial() guard
 		if (ev.action.isDial()) {
+			const valueText = locked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`;
+			
 			await ev.action.setFeedback({
 				title: championName,
 				icon: `imgs/champion/${championName}.png`,
-				value: locked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`
+				value: valueText
 			});
 		}
 	}
@@ -170,10 +172,12 @@ export class ChampionDial extends SingletonAction<ChampionDialSettings> {
 		await ev.action.setSettings(settings);
 
 		// ev.action is already DialAction from DialDownEvent — no cast needed
+		const valueText = willBeLocked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`;
+		
 		await ev.action.setFeedback({
 			title: championName,
 			icon: `imgs/champion/${championName}.png`,
-			value: willBeLocked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`
+			value: valueText
 		});
 	}
 

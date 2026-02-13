@@ -13,8 +13,9 @@ import { timerManager } from "../timer-manager.js";
 @action({ UUID: "com.dt.summonercooldowns.championdisplay" })
 export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 	private champions: string[] = [];
-	private roles = ["Top         I", "Jungle       II", "Mid       III", "ADC        IV", "Support     V"];
+	private roles = ["TOP⠀⠀⠀⠀", "JG⠀⠀⠀⠀", "MID⠀⠀⠀", "ADC⠀⠀⠀", "SUPP⠀⠀⠀"];
 	private instances: Map<string, DialAction<ChampionDisplaySettings>> = new Map();
+	private updateIntervalId?: ReturnType<typeof setInterval>;
 
 	constructor() {
 		super();
@@ -37,6 +38,25 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 				}
 			}
 		});
+
+		// Periodically update display to reflect timer states
+		this.updateIntervalId = setInterval(async () => {
+			if (this.instances.size > 0) {
+				const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
+				for (const [id, actionRef] of this.instances.entries()) {
+					try {
+						const settings = await actionRef.getSettings<ChampionDisplaySettings>();
+						const currentColumn = settings.current_column;
+
+						if (currentColumn !== undefined) {
+							await this.updateDisplay(actionRef, currentColumn, globalSettings);
+						}
+					} catch (error) {
+						// Silently ignore errors during periodic updates
+					}
+				}
+			}
+		}, 1000); // Update every second
 	}
 
 	private loadChampions(): void {
@@ -48,6 +68,7 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 			const championData = JSON.parse(data);
 
 			this.champions = Object.keys(championData.data);
+			console.log(`[ChampionDisplay] Loaded ${this.champions.length} champions`);
 		} catch (error) {
 			console.error("[ChampionDisplay] Error loading champions:", error);
 			this.champions = ["Error loading champions"];
@@ -70,10 +91,17 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 			championName = "None";
 		}
 
+		// Check if row 0 timer is running for this column
+		const timerKeyRow0 = `0-${currentColumn}`;
+		const isTimerRunningRow0 = timerManager.isRunning(timerKeyRow0);
+		
+		// Append fire emoji if row 0 timer is active
+		const displayName = isTimerRunningRow0 ? `${championName}⭐🔥=🍇` : championName;
+
 		const displayValue = roleIndex >= 0 ? this.roles[roleIndex] : "Not Assigned";
 
 		const feedback: Record<string, string> = {
-			title: championName,
+			title: displayName,
 			value: displayValue
 		};
 		if (championName !== "None") {
@@ -153,14 +181,22 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 		// Update cooldown_reduction for Row 0 if no timer is running
 		if (!isTimerRunningRow0) {
 			globalSettings.spellsRow0[currentColumn]!.cooldown_reduction = cooldown_reduction;
+			console.log(`[ChampionDisplay] Updated CDR  for Row 0, Column ${currentColumn}: ${cooldown_reduction.toFixed(2)}%`);
+		} else {
+			console.log(`[ChampionDisplay] Timer running for Row 0, Column ${currentColumn} - skipping CDR update`);
 		}
 
 		// Update cooldown_reduction for Row 1 if no timer is running
 		if (!isTimerRunningRow1) {
 			globalSettings.spellsRow1[currentColumn]!.cooldown_reduction = cooldown_reduction;
+			console.log(`[ChampionDisplay] Updated CDR for Row 1, Column ${currentColumn}: ${cooldown_reduction.toFixed(2)}%`);
+		} else {
+			console.log(`[ChampionDisplay] Timer running for Row 1, Column ${currentColumn} - skipping CDR update`);
 		}
 
 		await streamDeck.settings.setGlobalSettings(globalSettings);
+
+		console.log(`[ChampionDisplay] Updated summoner haste for column ${currentColumn}: ${totalHaste}% (Row0: ${hasteRow0}%, Row1: ${hasteRow1}%)`);
 	}
 
 	override async onDialRotate(ev: DialRotateEvent<ChampionDisplaySettings>): Promise<void> {
