@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Champion Dial Settings</title>
+    <script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+    <script>
+        let championsList = [];
+        
+        // Load champion data
+        async function loadChampions() {
+            try {
+                const response = await fetch('../champion/champion.json');
+                const data = await response.json();
+                championsList = Object.keys(data.data).sort();
+                populateChampionSelect();
+            } catch (error) {
+                console.error('Error loading champions:', error);
+            }
+        }
+        
+        // Populate champion select dropdown
+        function populateChampionSelect() {
+            const select = document.getElementById('championSelect');
+            if (!select) return;
+            
+            // Clear existing options
+            select.innerHTML = '';
+            
+            // Add champions as options
+            championsList.forEach((champion, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = champion;
+                select.appendChild(option);
+            });
+        }
+        
+        // Initialize when the page loads
+        window.addEventListener('load', () => {
+            loadChampions();
+        });
+    </script>
+</head>
+<body>
+    <sdpi-item label="Champion">
+        <sdpi-select id="championSelect" setting="championIndex">
+            <!-- Options will be populated dynamically -->
+        </sdpi-select>
+    </sdpi-item>
+    
+    <sdpi-item label="Role">
+        <sdpi-select setting="roleIndex">
+            <option value="0">Top</option>
+            <option value="1">Jungle</option>
+            <option value="2">Mid</option>
+            <option value="3">ADC</option>
+            <option value="4">Support</option>
+        </sdpi-select>
+    </sdpi-item>
+</body>
+</html>

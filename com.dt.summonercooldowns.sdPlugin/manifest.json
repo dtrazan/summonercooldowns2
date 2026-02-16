@@ -8,6 +8,7 @@
 			"UUID": "com.dt.summonercooldowns.championdial",
 			"Icon": "imgs/actions/champion-level/icon",
 			"Tooltip": "Rotate the dial to select a champion",
+			"PropertyInspectorPath": "ui/champion-dial.html",
 			"Controllers": [
 				"Encoder"
 			],

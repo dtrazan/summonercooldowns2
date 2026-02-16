@@ -1,4 +1,4 @@
-import { action, DialDownEvent, DialRotateEvent, SingletonAction, TouchTapEvent, WillAppearEvent, streamDeck } from "@elgato/streamdeck";
+import { action, DialDownEvent, DialRotateEvent, SingletonAction, TouchTapEvent, WillAppearEvent, DidReceiveSettingsEvent, streamDeck } from "@elgato/streamdeck";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -63,6 +63,23 @@ export class ChampionDial extends SingletonAction<ChampionDialSettings> {
 
 		// DialDownEvent/DialRotateEvent/TouchTapEvent already type action as DialAction,
 		// but WillAppearEvent types it as DialAction | KeyAction — use isDial() guard
+		if (ev.action.isDial()) {
+			const valueText = locked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`;
+			
+			await ev.action.setFeedback({
+				title: championName,
+				icon: `imgs/champion/${championName}.png`,
+				value: valueText
+			});
+		}
+	}
+
+	override async onDidReceiveSettings(ev: DidReceiveSettingsEvent<ChampionDialSettings>): Promise<void> {
+		const championIndex = ev.payload.settings.championIndex ?? 0;
+		const locked = ev.payload.settings.locked ?? false;
+		const roleIndex = ev.payload.settings.roleIndex ?? 0;
+		const championName = this.champions[championIndex] || this.champions[0] || "None";
+
 		if (ev.action.isDial()) {
 			const valueText = locked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`;
 			
