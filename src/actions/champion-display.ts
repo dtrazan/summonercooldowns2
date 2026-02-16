@@ -96,7 +96,7 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 		const isTimerRunningRow0 = timerManager.isRunning(timerKeyRow0);
 		
 		// Append fire emoji if row 0 timer is active
-		const displayName = isTimerRunningRow0 ? `${championName}⭐🔥=🍇` : championName;
+		const displayName = isTimerRunningRow0 ? `${championName}` : championName;
 
 		const displayValue = roleIndex >= 0 ? this.roles[roleIndex] : "Not Assigned";
 
@@ -134,14 +134,7 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 		this.instances.delete(ev.action.id);
 	}
 
-	override async onDialDown(ev: DialDownEvent<ChampionDisplaySettings>): Promise<void> {
-		const currentColumn = ev.payload.settings.current_column;
-
-		if (currentColumn === undefined) {
-			console.error("[ChampionDisplay] Cannot update haste - column not set");
-			return;
-		}
-
+	private async updateCooldowns(currentColumn: number): Promise<void> {
 		// Get global settings
 		const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
 
@@ -197,6 +190,10 @@ export class ChampionDisplay extends SingletonAction<ChampionDisplaySettings> {
 		await streamDeck.settings.setGlobalSettings(globalSettings);
 
 		console.log(`[ChampionDisplay] Updated summoner haste for column ${currentColumn}: ${totalHaste}% (Row0: ${hasteRow0}%, Row1: ${hasteRow1}%)`);
+	}
+
+	override async onDialDown(ev: DialDownEvent<ChampionDisplaySettings>): Promise<void> {
+		// Display only — no action
 	}
 
 	override async onDialRotate(ev: DialRotateEvent<ChampionDisplaySettings>): Promise<void> {
