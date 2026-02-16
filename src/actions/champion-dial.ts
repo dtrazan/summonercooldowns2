@@ -79,6 +79,53 @@ export class ChampionDial extends SingletonAction<ChampionDialSettings> {
 		const locked = ev.payload.settings.locked ?? false;
 		const roleIndex = ev.payload.settings.roleIndex ?? 0;
 		const championName = this.champions[championIndex] || this.champions[0] || "None";
+		const currentColumn = ev.payload.settings.current_column;
+
+		// If locked, update global settings so ChampionDisplay updates
+		if (locked && currentColumn !== undefined) {
+			const roleKey = ["top", "jungle", "mid", "adc", "support"][roleIndex] as "top" | "jungle" | "mid" | "adc" | "support";
+			const globalSettings = await streamDeck.settings.getGlobalSettings<GlobalSettings>();
+
+			// Clear any OTHER roles that might be using this column (role changed in PI)
+			for (const otherRoleKey of ["top", "jungle", "mid", "adc", "support"] as const) {
+				if (otherRoleKey !== roleKey && globalSettings[otherRoleKey]?.column === currentColumn) {
+					globalSettings[otherRoleKey]!.column = undefined;
+					globalSettings[otherRoleKey]!.champion = undefined;
+				}
+			}
+
+			// Clear any previous column this role was assigned to
+			const previousColumn = globalSettings[roleKey]?.column;
+			if (previousColumn !== undefined && previousColumn !== currentColumn) {
+				if (globalSettings.spellsRow0?.[previousColumn]) {
+					globalSettings.spellsRow0[previousColumn]!.spellLocked = false;
+					globalSettings.spellsRow0[previousColumn]!.role = undefined;
+				}
+				if (globalSettings.spellsRow1?.[previousColumn]) {
+					globalSettings.spellsRow1[previousColumn]!.spellLocked = false;
+					globalSettings.spellsRow1[previousColumn]!.role = undefined;
+				}
+			}
+
+			// Update the new role assignment
+			if (!globalSettings[roleKey]) {
+				globalSettings[roleKey] = {};
+			}
+			globalSettings[roleKey]!.champion = championName;
+			globalSettings[roleKey]!.column = currentColumn;
+
+			// Update spell cells to reflect the new role
+			if (globalSettings.spellsRow0?.[currentColumn]) {
+				globalSettings.spellsRow0[currentColumn]!.spellLocked = true;
+				globalSettings.spellsRow0[currentColumn]!.role = roleKey;
+			}
+			if (globalSettings.spellsRow1?.[currentColumn]) {
+				globalSettings.spellsRow1[currentColumn]!.spellLocked = true;
+				globalSettings.spellsRow1[currentColumn]!.role = roleKey;
+			}
+
+			await streamDeck.settings.setGlobalSettings(globalSettings);
+		}
 
 		if (ev.action.isDial()) {
 			const valueText = locked ? this.roles[roleIndex] : `${championIndex + 1}/${this.champions.length}`;
